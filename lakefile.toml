@@ -1,0 +1,41 @@
+name = "Zoo"
+defaultTargets = [
+    "set_theory",
+    "arith",
+    "interpretability_logic",
+    "propositional",
+    "modal",
+]
+
+[[require]]
+scope = "FormalizedFormalLogic"
+name = "Foundation"
+rev = "c478f8cec9d31e9902d9ed995805d2fce273fa4d"
+
+[[lean_lib]]
+name = "Zoo"
+
+[[lean_exe]]
+name = "arith"
+root = "Arith"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "set_theory"
+root = "SetTheory"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "modal"
+root = "Modal"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "interpretability_logic"
+root = "InterpretabilityLogic"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "propositional"
+root = "Propositional"
+supportInterpreter = true

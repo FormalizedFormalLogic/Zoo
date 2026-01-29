@@ -1,0 +1,11 @@
+# Lake
+.lake
+
+# VSCode
+.vscode/settings.json 
+
+*.json
+!lake-manifest.json
+
+*.png
+*.pdf
