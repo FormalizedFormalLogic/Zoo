@@ -38,4 +38,5 @@ public meta def main : IO Unit := do
   initSearchPath (← findSysroot)
   let env ← importModules (loadExts := true) #[`Foundation] {}
   let ⟨s, _, _⟩ ← Zoo.findMatches.toIO { fileName := "<compiler>", fileMap := default } { env := env }
-  IO.FS.writeFile "Zoo/Propositional.json" s.pretty
+  IO.println s.pretty
+  IO.FS.writeFile "./Propositional.json" s.pretty

@@ -40,4 +40,4 @@ public meta def main : IO Unit := do
   initSearchPath (← findSysroot)
   let env ← importModules (loadExts := true) #[`Foundation] {}
   let ⟨s, _, _⟩ ← Zoo.findMatches.toIO { fileName := "<compiler>", fileMap := default } { env := env }
-  IO.FS.writeFile "Zoo/InterpretabilityLogic.json" s.pretty
+  IO.FS.writeFile "./InterpretabilityLogic.json" s.pretty

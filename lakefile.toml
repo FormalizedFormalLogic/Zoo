@@ -10,32 +10,32 @@ defaultTargets = [
 [[require]]
 scope = "FormalizedFormalLogic"
 name = "Foundation"
-rev = "c478f8cec9d31e9902d9ed995805d2fce273fa4d"
+rev = "SnO2WMaN/issue725"
 
 [[lean_lib]]
 name = "Zoo"
 
 [[lean_exe]]
-name = "arith"
+name = "zoo_arith"
 root = "Arith"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "set_theory"
+name = "zoo_setTheory"
 root = "SetTheory"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "modal"
+name = "zoo_modal"
 root = "Modal"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "interpretability_logic"
+name = "zoo_interpretabilityLogic"
 root = "InterpretabilityLogic"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "propositional"
+name = "zoo_propositional"
 root = "Propositional"
 supportInterpreter = true
