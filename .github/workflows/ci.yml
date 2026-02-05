@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+  merge_group:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Setup graphviz
+        uses: ts-graphviz/setup-graphviz@v2
+      - name: Setup typst
+        uses: typst-community/setup-typst@v4
+      - name: Print tools version
+        run: |
+          lake --version
+          dot -V
+          typst --version
+
+      # Restore project cache
+      - name: Restore cache
+        id: cache-restore
+        uses: actions/cache/restore@v5
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
+      - name: Get Mathlib cache
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        run: lake exe cache get
+
+      # Build project
+      - name: Build executables
+        run: lake build
+      - name: Generate Propositional Zoo
+        run: |
+          lake exe zoo_propositional
+          typst compile ./propositional.typ ./pages/propositional.png
+          typst compile ./propositional.typ ./pages/propositional.pdf
+      - name: Generate Arith Zoo
+        run: |
+          lake exe zoo_arithmetic
+          typst compile ./arithmetic.typ ./pages/arithmetic.png
+          typst compile ./arithmetic.typ ./pages/arithmetic.pdf
+      - name: Generate SetTheory Zoo
+        run: |
+          lake exe zoo_set_theory
+          typst compile ./set_theory.typ ./pages/set_theory.png
+          typst compile ./set_theory.typ ./pages/set_theory.pdf
+      - name: Generate Modal Zoo
+        run: |
+          lake exe zoo_modal
+          typst compile ./modal.typ ./pages/modal.png
+          typst compile ./modal.typ ./pages/modal.pdf
+      - name: Generate InterpretabilityLogic Zoo
+        run: |
+          lake exe zoo_interpretability_logic
+          typst compile ./interpretability_logic.typ ./pages/interpretability_logic.png
+          typst compile ./interpretability_logic.typ ./pages/interpretability_logic.pdf
+
+      # Save project cache
+      - name: Save project cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          path: .lake
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+
+      # Upload pages artifact
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: pages
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
