@@ -1,6 +1,6 @@
 module
 
-import Foundation.InterpretabilityLogic.Logic.Basic
+public import Foundation
 public meta import Zoo
 public meta import Mathlib.Lean.Expr.Basic
 public meta import Qq.MetaM
