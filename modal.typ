@@ -9,7 +9,7 @@
 #let smallestMC(L) = $tau(#L)$
 #let largestMC(L) = $sigma(#L)$
 
-#let arrows = json("./Modal.json").map(((from, to, type)) => {
+#let arrows = json("./modal.json").map(((from, to, type)) => {
   if type == "ssub" {
     return strfmt("\"{}\" -> \"{}\"", to, from)
   } else if type == "sub" {
