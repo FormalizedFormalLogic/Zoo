@@ -1,12 +1,12 @@
 module
 
-import Foundation.InterpretabilityLogic.Logic.Basic
+import Foundation.Modal.Logic.Basic
 public meta import Zoo
 public meta import Mathlib.Lean.Expr.Basic
 public meta import Qq.MetaM
 
 open Lean Meta Qq Elab Command
-open LO.InterpretabilityLogic
+open LO.Modal
 
 namespace Zoo
 
@@ -40,4 +40,4 @@ public meta def main : IO Unit := do
   initSearchPath (← findSysroot)
   let env ← importModules (loadExts := true) #[`Foundation] {}
   let ⟨s, _, _⟩ ← Zoo.findMatches.toIO { fileName := "<compiler>", fileMap := default } { env := env }
-  IO.FS.writeFile "./InterpretabilityLogic.json" s.pretty
+  IO.FS.writeFile "./modal.json" s.pretty

@@ -4,7 +4,7 @@
 
 #let omitLabels = ()
 
-#let arrows = json("./InterpretabilityLogic.json").map(((from, to, type)) => {
+#let arrows = json("./interpretability_logic.json").map(((from, to, type)) => {
   if omitLabels.contains(from) == false and omitLabels.contains(from) == false {
     if type == "ssub" {
       return strfmt("\"{}\" -> \"{}\"", to, from)
@@ -46,7 +46,7 @@
   #raw-render(
     raw(
       "
-  digraph ModalTheorysZoo {
+  digraph Zoo {
     rankdir = RL;
 
     node [

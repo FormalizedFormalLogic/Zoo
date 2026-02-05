@@ -158,8 +158,8 @@
       "LO.Propositional.KC.smallestMC": $smallestMC(Logic("KC"))$,
       "LO.Propositional.LC.largestMC": $largestMC(Logic("LC"))$,
       "LO.Propositional.LC.smallestMC": $smallestMC(Logic("LC"))$,
-      "𝗣𝗔.ProvabilityLogic 𝗣𝗔": [$ProvLogic(Theory("PA"), Theory("PA"))$],
-      "𝗣𝗔.ProvabilityLogic 𝗧𝗔": [$ProvLogic(Theory("PA"), Theory("TA"))$],
+      "𝗣𝗔.provabilityLogicOn 𝗣𝗔": [$ProvLogic(Theory("PA"), Theory("PA"))$],
+      "𝗣𝗔.provabilityLogicOn 𝗧𝗔": [$ProvLogic(Theory("PA"), Theory("TA"))$],
     ),
     width: 640pt,
   )

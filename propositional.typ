@@ -2,7 +2,7 @@
 
 #set page(width: auto, height: auto, margin: 24pt)
 
-#let arrows = json("./Propositional.json").map(((from, to, type)) => {
+#let arrows = json("./propositional.json").map(((from, to, type)) => {
   if type == "ssub" {
     return strfmt("\"{}\" -> \"{}\"", to, from)
   } else if type == "sub" {

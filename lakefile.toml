@@ -1,10 +1,10 @@
 name = "Zoo"
 defaultTargets = [
-    "set_theory",
-    "arith",
-    "interpretability_logic",
-    "propositional",
-    "modal",
+    "zoo_set_theory",
+    "zoo_arithmetic",
+    "zoo_interpretability_logic",
+    "zoo_propositional",
+    "zoo_modal",
 ]
 
 [[require]]
@@ -16,26 +16,26 @@ rev = "SnO2WMaN/issue725"
 name = "Zoo"
 
 [[lean_exe]]
-name = "zoo_arith"
-root = "Arith"
+name = "zoo_arithmetic"
+root = "arithmetic"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "zoo_setTheory"
-root = "SetTheory"
+name = "zoo_set_theory"
+root = "set_theory"
 supportInterpreter = true
 
 [[lean_exe]]
 name = "zoo_modal"
-root = "Modal"
+root = "modal"
 supportInterpreter = true
 
 [[lean_exe]]
-name = "zoo_interpretabilityLogic"
-root = "InterpretabilityLogic"
+name = "zoo_interpretability_logic"
+root = "interpretability_logic"
 supportInterpreter = true
 
 [[lean_exe]]
 name = "zoo_propositional"
-root = "Propositional"
+root = "propositional"
 supportInterpreter = true

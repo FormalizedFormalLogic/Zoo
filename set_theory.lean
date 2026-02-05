@@ -1,6 +1,6 @@
 module
 
-import Foundation.FirstOrder.Arithmetic.Basic
+import Foundation.FirstOrder.SetTheory.Basic
 public meta import Zoo
 public meta import Mathlib.Lean.Expr.Basic
 public meta import Qq.MetaM
@@ -12,9 +12,9 @@ namespace Zoo
 
 meta def isMatch (ci : ConstantInfo) : MetaM (Option Edge) := withNewMCtxDepth do
   match ← inferTypeQ ci.type with
-  | ⟨1, ~q(Prop), ~q(LO.Entailment.StrictlyWeakerThan (S := Theory ℒₒᵣ) (T := Theory ℒₒᵣ) $a $b)⟩ =>
+  | ⟨1, ~q(Prop), ~q(LO.Entailment.StrictlyWeakerThan (S := Theory ℒₛₑₜ) (T := Theory ℒₛₑₜ) $a $b)⟩ =>
     return some ⟨toString (←Lean.PrettyPrinter.ppExpr a), toString (←Lean.PrettyPrinter.ppExpr b), .ssub⟩
-  | ⟨1, ~q(Prop), ~q(LO.Entailment.WeakerThan (S := Theory ℒₒᵣ) (T := Theory ℒₒᵣ) $a $b)⟩ =>
+  | ⟨1, ~q(Prop), ~q(LO.Entailment.WeakerThan (S := Theory ℒₛₑₜ) (T := Theory ℒₛₑₜ) $a $b)⟩ =>
     return some ⟨toString (←Lean.PrettyPrinter.ppExpr a), toString (←Lean.PrettyPrinter.ppExpr b), .sub⟩
   | _ => return none
 
@@ -33,9 +33,8 @@ meta def findMatches : MetaM Json := do
 
 end Zoo
 
-
 public meta def main : IO Unit := do
   initSearchPath (← findSysroot)
   let env ← importModules (loadExts := true) #[`Foundation] {}
   let ⟨s, _, _⟩ ← Zoo.findMatches.toIO { fileName := "<compiler>", fileMap := default } { env := env }
-  IO.FS.writeFile "./Arith.json" s.pretty
+  IO.FS.writeFile "./set_theory.json" s.pretty
