@@ -1,0 +1,70 @@
+name: Daily Lake Update
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allow manual triggering for testing
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Update dependencies and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      
+      - name: Print tools version
+        run: lake --version
+      
+      # Restore project cache
+      - name: Restore cache
+        id: cache-restore
+        uses: actions/cache/restore@v5
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-
+      
+      - name: Update dependencies
+        run: lake update
+      
+      - name: Get Mathlib cache
+        run: lake exe cache get
+      
+      - name: Build project
+        run: lake build
+      
+      # Save project cache
+      - name: Save project cache
+        if: success()
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
+      
+      - name: Commit and push changes
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            git commit -m "chore: daily lake update ($TIMESTAMP)"
+            git push
+          fi
