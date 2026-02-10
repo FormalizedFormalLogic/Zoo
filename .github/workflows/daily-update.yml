@@ -37,12 +37,11 @@ jobs:
           restore-keys: |
             lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-
       
-      - name: Get Mathlib cache
-        if: steps.cache-restore.outputs.cache-hit != 'true'
-        run: lake exe cache get
-      
       - name: Update dependencies
         run: lake update
+      
+      - name: Get Mathlib cache
+        run: lake exe cache get
       
       - name: Build project
         run: lake build
